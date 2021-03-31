@@ -49,8 +49,6 @@ public class Search {
 	               Element title = newdoc.createElement("title");
 	               title.appendChild(newdoc.createTextNode(eElement.getElementsByTagName("title").item(0).getTextContent()));
 	               code.appendChild(title);
-	               //System.out.println("Code : "+ eElement.getAttribute("docid"));
-	               //System.out.println("Title : "+ eElement.getElementsByTagName("title").item(0).getTextContent());
 	               System.out.println("Body : "+ eElement.getElementsByTagName("body").item(0).getTextContent());
 	               String input= ""+eElement.getElementsByTagName("body").item(0).getTextContent();
 	               KeywordExtractor ke = new KeywordExtractor();
@@ -58,7 +56,7 @@ public class Search {
 	               for(int i = 0; i<kl.size(); i++) {
 	            	   String text;
 	            	   Keyword kwrd = kl.get(i);
-	            	   text = " #"+kwrd.getString()+"\t :"+kwrd.getCnt();
+	            	   text = "#"+kwrd.getString()+":\t"+kwrd.getCnt()+"\t";
 	            	   body.appendChild(newdoc.createTextNode(text));
 	            	   code.appendChild(body);
 	               }
