@@ -68,7 +68,7 @@ public class Frequency {
         	 Combine.putAll(Final[i]);
          }
          for (String m : Combine.keySet()) {
-        	 String txt ="";
+        	 String txt ="[";
              //System.out.print("keyword : "+m + " ");
              double doc_count = 0.0;
              int [] doc1 = new int[5];
@@ -97,25 +97,29 @@ public class Frequency {
                       if(m.equals(x)) {
                     	  while(true) {
                     	  if(doc1[z]==1) {
-                    	  
-//                          System.out.print((z+1)+" "+i.get(x) * Math.log10((5/doc_count)));
-//                          System.out.print(",");
-                          txt +="["+(z+1)+","+i.get(x) * Math.log10((5/doc_count))+", ";
-                          txt +="]";
+                    	 
+                          txt +=(z+1)+","+i.get(x) * Math.log10((5/doc_count));
+                        
                           z++;
                     	  break;
                     	  }
                     	  else {
-                    		  z++;
+                    	  z++;
                     	  }
                     	  }
                              
-                     }
+                     txt +=" , ";
+                      }
                    
-                          }
+                  
                   }
-            	 Post.put(m, txt);
-            	 
+                  	
+                  }
+            txt = txt.trim();
+            txt +="]";
+            txt = txt.replace(" ,]", "]");
+            
+            Post.put(m, txt);
          }
    		  FileOutputStream Filestream = new FileOutputStream("C:\\Users\\Aqil Ikhwan\\OneDrive\\Documents\\SimpleIr\\Index.post");
    		  ObjectOutputStream ObjOs = new ObjectOutputStream(Filestream);
