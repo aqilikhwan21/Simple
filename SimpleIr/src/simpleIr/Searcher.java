@@ -18,11 +18,12 @@ import org.snu.ids.kkma.index.KeywordList;
 public class Searcher {
 
 	
-	public void CalcSim (String input) throws IOException, ClassNotFoundException {
+	public double[][] Innerproduct (String input) throws IOException, ClassNotFoundException {
+
 		double [][] Freq = new double[5][3];
 		 FileInputStream fileStream = new FileInputStream("C:\\Users\\Aqil Ikhwan\\OneDrive\\Documents\\SimpleIr\\index.post");
- 		 ObjectInputStream ObjIs = new ObjectInputStream(fileStream);
- 		  
+		 ObjectInputStream ObjIs = new ObjectInputStream(fileStream);
+		  
  		 Object object = ObjIs.readObject();
  		 ObjIs.close();
  		 	
@@ -42,6 +43,7 @@ public class Searcher {
      			  String value = (String)hashmap.get(Key);
      			  value = value.replaceAll("[\\[\\]\\(\\)]", "");
      			  String [] output = value.split(" , ");
+ 
      			  
      			  for(String id : output) {
      				  
@@ -57,42 +59,51 @@ public class Searcher {
      					 
      				  }else if(Character.getNumericValue(id.charAt(0))==2){
      					  
+
      					  int wq =kwrd.getCnt();
     					  String[] tfidf = id.split(",");
     					  double weight = Double.parseDouble(tfidf[1]);
     					  double sum = weight*wq;
+ 
     					  Freq[1][0] += sum;
     					  Freq[1][1] += wq*wq;
     					  Freq[1][2] += weight*weight;
     					  
      				  }else if(Character.getNumericValue(id.charAt(0))==3){
      					  
+
      					 int wq =kwrd.getCnt();
     					  String[] tfidf = id.split(",");
     					  double weight = Double.parseDouble(tfidf[1]);
     					  double sum = weight*wq;
+ 
     					  Freq[2][0] += sum;
     					  Freq[2][1] += wq*wq;
     					  Freq[2][2] += weight*weight;
     					  
+
      				  }else if(Character.getNumericValue(id.charAt(0))==4) {
      					 int wq =kwrd.getCnt();
     					  String[] tfidf = id.split(",");
     					  double weight = Double.parseDouble(tfidf[1]);
     					  double sum = weight*wq;
+ 
     					  Freq[3][0] += sum;
     					  Freq[3][1] += wq*wq;
     					  Freq[3][2] += weight*weight;
     					  
+
      				  }else {
      					 int wq =kwrd.getCnt();
     					  String[] tfidf = id.split(",");
     					  double weight = Double.parseDouble(tfidf[1]);
     					  double sum = weight*wq;
+ 
     					  Freq[4][0] += sum;
     					  Freq[4][1] += wq*wq;
     					  Freq[4][2] += weight*weight;
     					  
+
      				  }
      			  }
      			  break;
@@ -100,24 +111,35 @@ public class Searcher {
      			  continue;
      	   }
         }
+	return Freq;
+	}
+        
+	
+public void CalcSim (String input, double [][] Freq) throws IOException, ClassNotFoundException {
+
+
         double [][] Frequency = new double[5][2];
         for(int i = 0; i<Frequency.length; i++) {
         	Frequency[i][0] = i+1;
+ 
 //        	System.out.println(Freq[i][1]+" "+Freq[i][2]);
         	Frequency[i][1] = Freq[i][0]/(Math.sqrt(Freq[i][1])*Math.sqrt(Freq[i][2]));
 //        	System.out.println(Frequency[i][1]);
+
         }
         java.util.Arrays.sort(Frequency, new java.util.Comparator<double[]>() {
             public int compare(double[] a, double[] b) {
                 return Double.compare(a[1], b[1]);
             }
         });
+ 
         
        
        String[] rank = new String[3];
        String[] doctest = {"떡 ","라면","아이스크림 ","초밥","파스타"};
        int count=0;
        for (int i = 0; i<3;i++) {
+
     	   for(int j = 0; j < doctest.length;j++) {
     			   if(Frequency[i][0] == j+1)
     				  rank[count++] = doctest[j];
@@ -127,7 +149,9 @@ public class Searcher {
 
          
   
+ 
         System.out.println("Ranking 1: "+rank[0]+" / Weight : "+Frequency[0][1]+"\nRanking 2: "+rank[1]+" / Weight : "+Frequency[1][1]+"\nRanking 3: "+rank[2]+" / Weight : "+Frequency[2][1]);
+
 	}
 	
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
@@ -135,8 +159,10 @@ public class Searcher {
 		System.out.print("Please Input Text:");
 		String input = sc.nextLine();
 		Searcher ss = new Searcher();
-		ss.CalcSim(input);
+		ss.CalcSim(input,ss.Innerproduct(input));
 
 	}
 
+ 
 }
+
